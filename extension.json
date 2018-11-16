@@ -1,0 +1,25 @@
+{
+  "displayName": "Throttle Condition",
+  "name": "throttle-condition",
+  "platform": "web",
+  "version": "1.0.0",
+  "description": "Provides a Condition that allows you to apply throttling to Rules, i.e. limit how often the Rules fire.",
+  "author": {
+    "name": "Jan Exner",
+    "email": "jexner@adobe.com"
+  },
+  "viewBasePath": "src/view/",
+  "conditions": [
+    {
+      "displayName": "Throttle",
+      "name": "throttle",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "libPath": "src/lib/conditions/throttle.js",
+      "viewPath": "conditions/throttle.html"
+    }
+  ]
+}
