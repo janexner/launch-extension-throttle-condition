@@ -3,25 +3,61 @@
   <head>
     <meta charset="UTF-8">
     <title>Condition</title>
+    <style>
+.label {
+  line-height: 1.2rem;
+  margin-right: 0.5rem;
+  font: sans-serif;
+}
+
+.u-gapRight {
+  margin-right: 0.5rem;
+}
+    </style>
   </head>
   <body>
-    Condition Template
-
+    <form>
+      <section>
+        <label class="u-gapRight">
+          <span class="label">Don't fire more often than once per </span>
+          <input id="timeLimit" type="number">
+        </label>
+        <label>
+          <select id="timeUnit">
+            <option value="seconds">Seconds</option>
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+            <option value="days">Days</option>
+          </select>
+        </label>
+      </section>
+    </form>
+  
     <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
     <script>
       window.extensionBridge.register({
         init: function(info) {
-          if (info.settings) {
-            // TODO Populate form values from persisted settings.
+          if (info && info.settings) {
+            document.getElementById('timeLimit').value = info.settings.timeLimit;
+            document.getElementById('timeUnit').value = info.settings.timeUnit;
           }
         },
 
         getSettings: function() {
-          // TODO Return settings object from form values.
+          return {
+            timeLimit: document.getElementById('timeLimit').value || '',
+            timeUnit: document.getElementById('timeUnit').value || ''
+          }
         },
 
         validate: function() {
-          // TODO Return whether settings are valid.
+          var timeLimitField = document.getElementById('timeLimit');
+          var timeUnitField = document.getElementById('timeUnit');
+
+          timeLimitField.invalid = !timeLimitField.value || 0 === timeLimitField.value;
+          timeUnitField.invalid = !timeUnitField.value;
+
+          return !timeLimitField.invalid && !timeUnitField.invalid;
         }
       });
     </script>
