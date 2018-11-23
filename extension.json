@@ -9,6 +9,7 @@
     "email": "jexner@adobe.com"
   },
   "viewBasePath": "src/view/",
+  "iconPath": "resources/icons/logo.svg",
   "conditions": [
     {
       "displayName": "Throttle",
