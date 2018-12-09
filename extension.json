@@ -1,9 +1,9 @@
 {
-  "displayName": "Throttle Condition",
-  "name": "throttle-condition",
+  "displayName": "Throttle Conditions",
+  "name": "ags055-throttle-conditions",
   "platform": "web",
   "version": "1.0.0",
-  "description": "Provides a Condition that allows you to apply throttling to Rules, i.e. limit how often the Rules fire.",
+  "description": "Provides various Conditions that allow you to apply throttling to Rules, i.e. limit how often the Rules fire.",
   "author": {
     "name": "Jan Exner",
     "email": "jexner@adobe.com"
@@ -12,12 +12,31 @@
   "iconPath": "resources/icons/logo.svg",
   "conditions": [
     {
-      "displayName": "Throttle",
-      "name": "throttle",
+      "displayName": "Throttle by Time",
+      "name": "throttle-by-time",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "timeLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "timeUnit": {
+            "type": "string",
+            "enum": [ "seconds", "minutes", "hours", "days" ]
+          },
+          "watchGlobally": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "timeUnit",
+          "timeLimit",
+          "watchGlobally"
+        ],
+        "additionalProperties": false
       },
       "libPath": "src/lib/conditions/throttle.js",
       "viewPath": "conditions/throttle.html"

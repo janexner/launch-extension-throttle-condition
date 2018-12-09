@@ -16,22 +16,28 @@
     </style>
   </head>
   <body>
-    <form>
-      <section>
-        <label class="u-gapRight">
-          <span class="label">Don't fire more often than once per </span>
-          <input id="timeLimit" type="number">
-        </label>
-        <label>
-          <select id="timeUnit">
-            <option value="seconds">Seconds</option>
-            <option value="minutes">Minutes</option>
-            <option value="hours">Hours</option>
-            <option value="days">Days</option>
-          </select>
-        </label>
-      </section>
-    </form>
+    <section>
+      <label class="u-gapRight">
+        <span class="label">Don't fire more often than once per </span>
+        <input id="timeLimit" type="number">
+      </label>
+      <label>
+        <select id="timeUnit">
+          <option value="seconds">Seconds</option>
+          <option value="minutes">Minutes</option>
+          <option value="hours">Hours</option>
+          <option value="days">Days</option>
+        </select>
+      </label>
+    </section>
+
+    <section>
+      <p>This Condition watches all Rules across your site, or just the Rule it is part of.</p>
+      <label>
+        <input type="checkbox" id="watchGlobally">
+        <span class="label">Take into account all tracking activity across Rules</span>
+      </label>
+    </section>
   
     <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
     <script>
@@ -40,13 +46,15 @@
           if (info && info.settings) {
             document.getElementById('timeLimit').value = info.settings.timeLimit;
             document.getElementById('timeUnit').value = info.settings.timeUnit;
+            document.getElementById('watchGlobally').checked = info.settings.watchGlobally;
           }
         },
 
         getSettings: function() {
           return {
-            timeLimit: document.getElementById('timeLimit').value || '',
-            timeUnit: document.getElementById('timeUnit').value || ''
+            timeLimit: Number(document.getElementById('timeLimit').value || ''),
+            timeUnit: document.getElementById('timeUnit').value || '',
+            watchGlobally: document.getElementById('watchGlobally').checked || false
           }
         },
 
