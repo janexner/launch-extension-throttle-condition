@@ -2,7 +2,7 @@
   "displayName": "Throttle Conditions",
   "name": "ags055-throttle-conditions",
   "platform": "web",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Provides various Conditions that allow you to apply throttling to Rules, i.e. limit how often the Rules fire.",
   "author": {
     "name": "Jan Exner",
@@ -30,15 +30,15 @@
           "watchGlobally": {
             "type": "boolean"
           },
-          "uuid": {
-            "type": "string"
+          "resetAtPageLoad": {
+            "type": "boolean"
           }
         },
         "required": [
           "timeUnit",
           "timeLimit",
           "watchGlobally",
-          "uuid"
+          "resetAtPageLoad"
         ],
         "additionalProperties": false
       },

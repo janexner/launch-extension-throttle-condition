@@ -32,6 +32,15 @@
     </section>
 
     <section>
+      <p>This Condition can see every new page as a new beginning, or work across pages.</p>
+      <label>
+        <input type="checkbox" id="resetAtPageLoad">
+        <span class="label">Reset at Page Load</span>
+      </label>
+      <p><em>Note: the reset happens when a new page loads. It does not work with SPAs.</em></p>
+    </section>
+
+    <section>
       <p>This Condition watches all Rules across your site, or just the Rule it is part of.</p>
       <label>
         <input type="checkbox" id="watchGlobally">
@@ -39,10 +48,6 @@
       </label>
     </section>
 
-    <section style="display: none;">
-      <input type="text" id="uuid">
-    </section>
-  
     <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
     <script>
       window.extensionBridge.register({
@@ -51,7 +56,7 @@
             document.getElementById('timeLimit').value = info.settings.timeLimit;
             document.getElementById('timeUnit').value = info.settings.timeUnit;
             document.getElementById('watchGlobally').checked = info.settings.watchGlobally;
-            document.getElementById('uuid').value = info.settings.uuid;
+            document.getElementById('resetAtPageLoad').checked = info.settings.resetAtPageLoad;
           }
         },
 
@@ -60,7 +65,7 @@
             timeLimit: Number(document.getElementById('timeLimit').value || ''),
             timeUnit: document.getElementById('timeUnit').value || '',
             watchGlobally: document.getElementById('watchGlobally').checked || false,
-            uuid: document.getElementById('uuid').value || uuidv4()
+            resetAtPageLoad: document.getElementById('resetAtPageLoad').checked || true
           }
         },
 
@@ -74,13 +79,6 @@
           return !timeLimitField.invalid && !timeUnitField.invalid;
         }
       });
-    </script>
-    <script>
-      function uuidv4() {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => 
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        )
-      }
     </script>
   </body>
 </html>

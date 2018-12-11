@@ -4,16 +4,18 @@ var storageELementName = 'jeThrottleState';
 
 module.exports = function(settings, event) {
   var result = true; // passes by default
-  var thisRuleID = '';
-  console.log(turbine);
+  var thisRuleID = event.$rule.id;
+  var restAtPageLoad = settings.restAtPageLoad;
 
   // get state
-  var oldStateRaw = sessionStorage.getItem(storageELementName);
-  oldStateRaw = oldStateRaw || "{}";
-  var oldState = JSON.parse(oldStateRaw);
-  if ('undefined' !== typeof oldState && oldState 
-    && (('undefined' !== typeof oldState.lastCall && oldState.lastCall)
-      || ('undefined' !== typeof oldState[thisRuleID] && oldState[thisRuleID] && 'undefined' !== typeof oldState[thisRuleID].lastCall))) {
+  var oldState;
+  try {
+    if (restAtPageLoad) {
+      oldState = _satellite._ags055.throttle.throttleByTime.oldState;
+    } else {
+      var oldStateRaw = sessionStorage.getItem(storageELementName);
+      oldState = JSON.parse(oldStateRaw);
+    }
     // check max events per time
     var timeUnit = settings.timeUnit;
     var timeLimit = settings.timeLimit;
@@ -51,9 +53,11 @@ module.exports = function(settings, event) {
       // too early
       result = false;
     }
-  } // no lastCall
+  } catch (e) {
+    oldState = {};
+  }
 
-  // done. store new state
+  // done. make new state
   var newState = oldState;
   if (result) {
     // since we'll reply true, record now as the time.
@@ -65,6 +69,14 @@ module.exports = function(settings, event) {
       newState[thisRuleID].lastCall = new Date();
     }
   }
-  var newStateRaw = JSON.stringify(newState);
-  sessionStorage.setItem(storageELementName, newStateRaw);
+  // store new state
+  if (resetAtPageLoad) {
+    _satellite._ags055 = _satellite._ags055 || {};
+    _satellite._ags055.throttle = _satellite._ags055.throttle || {};
+    _satellite._ags055.throttle.throttleByTime = _satellite._ags055.throttle.throttleByTime || {};
+    _satellite._ags055.throttle.throttleByTime.oldState = newState;
+  } else {
+    var newStateRaw = JSON.stringify(newState);
+    sessionStorage.setItem(storageELementName, newStateRaw);
+  }
 };
