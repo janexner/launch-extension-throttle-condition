@@ -42,8 +42,8 @@
         ],
         "additionalProperties": false
       },
-      "libPath": "src/lib/conditions/throttle.js",
-      "viewPath": "conditions/throttle.html"
+      "libPath": "src/lib/conditions/throttleByTime.js",
+      "viewPath": "conditions/throttleByTime.html"
     }
   ]
 }
