@@ -38,6 +38,10 @@
         <span class="label">Take into account all tracking activity across Rules</span>
       </label>
     </section>
+
+    <section style="display: none;">
+      <input type="text" id="uuid">
+    </section>
   
     <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
     <script>
@@ -47,6 +51,7 @@
             document.getElementById('timeLimit').value = info.settings.timeLimit;
             document.getElementById('timeUnit').value = info.settings.timeUnit;
             document.getElementById('watchGlobally').checked = info.settings.watchGlobally;
+            document.getElementById('uuid').value = info.settings.uuid;
           }
         },
 
@@ -54,7 +59,8 @@
           return {
             timeLimit: Number(document.getElementById('timeLimit').value || ''),
             timeUnit: document.getElementById('timeUnit').value || '',
-            watchGlobally: document.getElementById('watchGlobally').checked || false
+            watchGlobally: document.getElementById('watchGlobally').checked || false,
+            uuid: document.getElementById('uuid').value || uuidv4()
           }
         },
 
@@ -68,6 +74,13 @@
           return !timeLimitField.invalid && !timeUnitField.invalid;
         }
       });
+    </script>
+    <script>
+      function uuidv4() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => 
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        )
+      }
     </script>
   </body>
 </html>

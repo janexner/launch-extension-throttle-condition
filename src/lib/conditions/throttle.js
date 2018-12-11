@@ -1,18 +1,19 @@
 'use strict';
 
-const storageELementName = 'jeThrottleState';
+var storageELementName = 'jeThrottleState';
 
 module.exports = function(settings, event) {
   var result = true; // passes by default
   var thisRuleID = '';
+  console.log(turbine);
 
   // get state
   var oldStateRaw = sessionStorage.getItem(storageELementName);
   oldStateRaw = oldStateRaw || "{}";
   var oldState = JSON.parse(oldStateRaw);
-  if ('undefined' === typeof oldState || 'undefined' === typeof oldState.lastCall || ('undefined' !== oldState[thisRuleID] && 'undefined' === typeof oldState[thisRuleID.lastCall])) {
-    // never been called
-  } else {
+  if ('undefined' !== typeof oldState && oldState 
+    && (('undefined' !== typeof oldState.lastCall && oldState.lastCall)
+      || ('undefined' !== typeof oldState[thisRuleID] && oldState[thisRuleID] && 'undefined' !== typeof oldState[thisRuleID].lastCall))) {
     // check max events per time
     var timeUnit = settings.timeUnit;
     var timeLimit = settings.timeLimit;
@@ -35,21 +36,22 @@ module.exports = function(settings, event) {
     // how long ago was the last call? In seconds?
     var difference = new Date();
     if (watchGlobally) {
-      difference = difference - oldState.lastCall;
+      difference = difference - new Date(oldState.lastCall);
     } else {
       if ('undefined' !== oldState[thisRuleID] && oldState[thisRuleID] && 'undefined' !== oldState[thisRuleID].lastCall && oldState[thisRuleID].lastCall) {
-        difference = difference - oldState[thisRuleID].lastCall;
+        difference = difference - new Date(oldState[thisRuleID].lastCall);
       } else {
         // never had a call from this Rule
         difference = 1000 * timeLimit;
       }
     }
     difference = difference / 1000; // convert from ms to s
+    console.log('timeDiff', difference);
     if (difference < timeLimit) {
       // too early
       result = false;
     }
-  } // else no lastCall
+  } // no lastCall
 
   // done. store new state
   var newState = oldState;
